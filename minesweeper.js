@@ -1,4 +1,5 @@
 var grid = document.getElementById("grid");
+var debug = true;
 const N = 10;
 var hiddenGrid = [];
 var visibleGrid = [];
@@ -38,6 +39,7 @@ function addMines() {
       cell = grid.rows[coords[0]].cells[coords[1]];
     }
     cell.setAttribute("data-mine", "true")
+    if (debug) cell.innerHTML="B";
     //hiddenGrid[coords[0]][coords[1]] = 'B'
   }
 }
@@ -77,6 +79,7 @@ function addNumbers() {
           }
         })
         cell.setAttribute("cell-value", bombCount);
+        if (debug) cell.innerHTML = bombCount;
       }
     }
   }
