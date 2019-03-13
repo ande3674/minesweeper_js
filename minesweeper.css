@@ -1,0 +1,29 @@
+body {
+  font-family: 'Sniglet', cursive;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+#grid {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#grid tr td{
+  border:1px solid white;
+  background: #999999;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+#grid tr td.clicked {
+    background: #333333;
+}
+
+#grid tr td.mine {
+    background: #FF0000;
+}
