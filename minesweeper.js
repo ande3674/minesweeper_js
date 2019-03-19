@@ -71,9 +71,8 @@ function addNumbers() {
 function clickCell(cell) {
   // if bomb is clicked
   if (cell.getAttribute("data-mine") === "true") {
-    // reveal board
+    // reveal board, alert that player lost
     revealBoard();
-    // alert that player lost
     alert("BOMB! Game Over.");
   }
   //else - no bomb
@@ -116,12 +115,6 @@ function recursive(cell) {
 function checkGameOver(){
   // all cells that arent bombs are visible
   var gameOver = true;
-  // while (gameOver) {
-  //   if ((cell.getAttribute("visible") == "false") && (cell.getAttribute("cell-value") !== 'B')){
-  //     gameOver = false;
-  //     break;
-  //   }
-  // }
   for (var i = 0 ; i < N ; i++) {
     console.log(i);
     for (var j = 0 ; j < N ; j++){
@@ -132,7 +125,6 @@ function checkGameOver(){
       }
     }
     if (!gameOver){
-      //console.log("breaking?");
       break;
     }
   }
