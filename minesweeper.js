@@ -67,14 +67,14 @@ function addNumbers() {
     }
   }
 }
-//console.log(grid);
+
 function clickCell(cell) {
   // if bomb is clicked
   if (cell.getAttribute("data-mine") === "true") {
     // reveal board
     revealBoard();
     // alert that player lost
-    alert("Game Over");
+    alert("BOMB! Game Over.");
   }
   //else - no bomb
   else {
@@ -88,7 +88,12 @@ function clickCell(cell) {
     else if (cell.getAttribute("cell-value") == 0) {
       recursive(cell);
     }
-    // TODO check if game is over
+    //check if game is over
+    var gameOver = checkGameOver();
+    if (gameOver){
+      alert("You win!")
+      revealBoard();
+    }
   }
 }
 
@@ -106,6 +111,32 @@ function recursive(cell) {
       }
     }
   })
+}
+
+function checkGameOver(){
+  // all cells that arent bombs are visible
+  var gameOver = true;
+  // while (gameOver) {
+  //   if ((cell.getAttribute("visible") == "false") && (cell.getAttribute("cell-value") !== 'B')){
+  //     gameOver = false;
+  //     break;
+  //   }
+  // }
+  for (var i = 0 ; i < N ; i++) {
+    console.log(i);
+    for (var j = 0 ; j < N ; j++){
+      var cell = grid.rows[i].cells[j];
+      if ((cell.getAttribute("visible") == "false") && (cell.getAttribute("cell-value") !== 'B')){
+        gameOver = false;
+        break;
+      }
+    }
+    if (!gameOver){
+      //console.log("breaking?");
+      break;
+    }
+  }
+  return gameOver;
 }
 
 function revealBoard() {
@@ -144,16 +175,4 @@ function randomCoords(n) {
   var x = Math.floor(Math.random() * n);
   var y = Math.floor(Math.random() * n);
   return [x, y];
-}
-
-function revealCellReturnSurroundingCellsEqualToZero(cell) {
-  cell.innerHTML = cell.getAttribute("cell-value");
-  var surroundingCells = getSurroundingCells(cell, cell.parentNode.rowIndex, cell.target.cellIndex);
-  var surroundingEqualingZero = [];
-  surroundingCells.forEach(function(el) {
-    if (grid.rows[el[0]].cells[el[1]].getAttribute("cell-value") === 0){
-      surroundingEqualingZero.push(el);
-    }
-  })
-  return surroundingEqualingZero;
 }
