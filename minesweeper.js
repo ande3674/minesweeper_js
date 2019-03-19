@@ -12,17 +12,18 @@ function generateGrid() {
   for (var i = 0 ; i < N ; i++) {
     row = grid.insertRow(i);
     for (var j = 0 ; j < N ; j++){
-      //row[j] = j;
       cell = row.insertCell(j);
       cell.onclick = function() { clickCell(this); };
       var mine = document.createAttribute("data-mine");
       var cell_value = document.createAttribute("cell-value");
+      var visible = document.createAttribute("visible");
       mine.value = "false";
       cell_value.value = "B";
+      visible.value = "false";
       cell.setAttributeNode(mine);
-      cell.setAttributeNode(cell_value)
+      cell.setAttributeNode(cell_value);
+      cell.setAttributeNode(visible);
     }
-    //hiddenGrid[i] = row;
   }
   addMines();
   addNumbers();
@@ -32,7 +33,6 @@ function addMines() {
   // Place Bombs
   for (var i = 0 ; i < N ; i++){
     var coords = randomCoords(N);
-    //var gridValue = hiddenGrid[coords[0]][coords[1]];
     var cell = grid.rows[coords[0]].cells[coords[1]];
     while (cell.getAttribute("data-mine") === 'true'){
       coords = randomCoords(N);
@@ -40,7 +40,6 @@ function addMines() {
     }
     cell.setAttribute("data-mine", "true")
     if (debug) cell.innerHTML="B";
-    //hiddenGrid[coords[0]][coords[1]] = 'B'
   }
 }
 
@@ -83,35 +82,30 @@ function clickCell(cell) {
     if (cell.getAttribute("cell-value") > 0){
       console.log(cell.innerHTML);
       cell.innerHTML = cell.getAttribute("cell-value");
+      cell.setAttribute("visible", "true");
     }
-    else if (cell.getAttribute("cell-value") === 0) {
-      // TODO make this recursive AF
-      // get list of adjacent cells
-      // check if value is still zero/stop when you reach a value > 0
-      // TODO - how do you get the row and cell index ?!
-      cell.innerHTML = cell.getAttribute("cell-value");
-      console.log(cell.target.cellIndex);
-      var surroundingCells = getSurroundingCells(cell, cell.parentNode.rowIndex, cell.target.cellIndex);
-      console.log(surroundingCells);
-
-
+    // If cell = 0, reveal cell and all surrounding cells
+    else if (cell.getAttribute("cell-value") == 0) {
+      recursive(cell);
     }
     // TODO check if game is over
   }
 }
-// TODO Use this one?
-function revealCellReturnSurroundingCellsEqualToZero(cell) {
+
+function recursive(cell) {
   cell.innerHTML = cell.getAttribute("cell-value");
-  //console.log(cell.target.cellIndex);
-  var surroundingCells = getSurroundingCells(cell, cell.parentNode.rowIndex, cell.target.cellIndex);
-  //console.log(surroundingCells);
-  var surroundingEqualingZero = [];
-  surroundingCells.forEach(function(el) {
-    if (grid.rows[el[0]].cells[el[1]].getAttribute("cell-value") === 0){
-      surroundingEqualingZero.push(el);
+  cell.setAttribute("visible", "true");
+  var surroundingCells = getSurroundingCells(cell, cell.parentNode.rowIndex, cell.cellIndex);
+  surroundingCells.forEach(function(coords) {
+    c = grid.rows[coords[0]].cells[coords[1]];
+    if (c.getAttribute("visible") === "false"){
+      c.innerHTML = c.getAttribute("cell-value");
+      c.setAttribute("visible", "true");
+      if (c.getAttribute("cell-value") == 0){
+        recursive(c);
+      }
     }
   })
-  return surroundingEqualingZero;
 }
 
 function revealBoard() {
@@ -154,9 +148,7 @@ function randomCoords(n) {
 
 function revealCellReturnSurroundingCellsEqualToZero(cell) {
   cell.innerHTML = cell.getAttribute("cell-value");
-  //console.log(cell.target.cellIndex);
   var surroundingCells = getSurroundingCells(cell, cell.parentNode.rowIndex, cell.target.cellIndex);
-  //console.log(surroundingCells);
   var surroundingEqualingZero = [];
   surroundingCells.forEach(function(el) {
     if (grid.rows[el[0]].cells[el[1]].getAttribute("cell-value") === 0){
