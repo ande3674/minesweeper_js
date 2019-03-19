@@ -3,6 +3,9 @@ var debug = false;
 const N = 10;
 var hiddenGrid = [];
 var visibleGrid = [];
+var countElement = document.getElementById("count");
+countElement.innerHTML = "10";
+
 
 generateGrid();
 
@@ -79,7 +82,6 @@ function clickCell(cell) {
   else {
     // if value is > 0 - reveal one cell
     if (cell.getAttribute("cell-value") > 0){
-      console.log(cell.innerHTML);
       cell.innerHTML = cell.getAttribute("cell-value");
       cell.setAttribute("visible", "true");
     }
@@ -116,7 +118,6 @@ function checkGameOver(){
   // all cells that arent bombs are visible
   var gameOver = true;
   for (var i = 0 ; i < N ; i++) {
-    console.log(i);
     for (var j = 0 ; j < N ; j++){
       var cell = grid.rows[i].cells[j];
       if ((cell.getAttribute("visible") == "false") && (cell.getAttribute("cell-value") !== 'B')){
