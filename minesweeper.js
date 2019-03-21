@@ -1,3 +1,4 @@
+
 var grid = document.getElementById("grid");
 var debug = false;
 const N = 10;
@@ -76,7 +77,7 @@ function addNumbers() {
 
 // TODO - still need to update bombcount if you click a red cell
 // that doesnt end up being a bomb !!!!!!!!!!!
-// or else disable clicks on red cells 
+// or else disable clicks on red cells
 function clickCell(cell) {
   // if bomb is clicked
   if (cell.getAttribute("data-mine") === "true") {
@@ -206,3 +207,10 @@ function randomCoords(n) {
   var y = Math.floor(Math.random() * n);
   return [x, y];
 }
+
+/*
+
+Sources: https://www.101computing.net/minesweeper-in-javascript/
+Got some help in implementing the HTML/CSS for the game 
+
+*/
