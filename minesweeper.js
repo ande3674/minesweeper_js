@@ -17,6 +17,7 @@ function generateGrid() {
     for (var j = 0 ; j < N ; j++){
       cell = row.insertCell(j);
       cell.onclick = function() { clickCell(this); };
+      cell.oncontextmenu = function() { rightClickCell(this); };
       var mine = document.createAttribute("data-mine");
       var cell_value = document.createAttribute("cell-value");
       var visible = document.createAttribute("visible");
@@ -96,6 +97,15 @@ function clickCell(cell) {
       revealBoard();
     }
   }
+}
+
+function rightClickCell(cell) {
+  //alert('Right click!')
+  // if cell is not already red
+    // turn off the menu
+    // turn the cell red
+    // decrease bomb count
+  // else make cell grey again
 }
 
 function recursive(cell) {
