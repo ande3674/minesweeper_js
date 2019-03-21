@@ -21,9 +21,13 @@ h1 {
 }
 
 #grid tr td.clicked {
-    background: #333333;
+    background: #BBBBBB;
 }
 
-#grid tr td.mine {
+#grid tr td.hidden {
+    background: #999999;
+}
+
+#grid tr td.bomb {
     background: #FF0000;
 }

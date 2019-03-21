@@ -4,7 +4,8 @@ const N = 10;
 var hiddenGrid = [];
 var visibleGrid = [];
 var countElement = document.getElementById("count");
-countElement.innerHTML = "10";
+var bombCount = 10;
+countElement.innerHTML = bombCount;
 
 
 generateGrid();
@@ -27,6 +28,7 @@ function generateGrid() {
       cell.setAttributeNode(mine);
       cell.setAttributeNode(cell_value);
       cell.setAttributeNode(visible);
+      cell.className = "hidden";
     }
   }
   addMines();
@@ -81,6 +83,7 @@ function clickCell(cell) {
   }
   //else - no bomb
   else {
+    cell.className = "clicked";
     // if value is > 0 - reveal one cell
     if (cell.getAttribute("cell-value") > 0){
       cell.innerHTML = cell.getAttribute("cell-value");
@@ -100,23 +103,35 @@ function clickCell(cell) {
 }
 
 function rightClickCell(cell) {
-  //alert('Right click!')
+  // TODO disable the menu from popping up
   // if cell is not already red
-    // turn off the menu
+  if (cell.className == "hidden") {
     // turn the cell red
+    cell.className = "bomb"
     // decrease bomb count
-  // else make cell grey again
+    bombCount = bombCount - 1;
+    countElement.innerHTML = bombCount;
+  }
+  else {
+    // else make cell grey again & increase bomb count
+    cell.className = "hidden";
+    bombCount = bombCount + 1;
+    countElement.innerHTML = bombCount;
+
+  }
 }
 
 function recursive(cell) {
   cell.innerHTML = cell.getAttribute("cell-value");
   cell.setAttribute("visible", "true");
+  cell.className = "clicked";
   var surroundingCells = getSurroundingCells(cell, cell.parentNode.rowIndex, cell.cellIndex);
   surroundingCells.forEach(function(coords) {
     c = grid.rows[coords[0]].cells[coords[1]];
     if (c.getAttribute("visible") === "false"){
       c.innerHTML = c.getAttribute("cell-value");
       c.setAttribute("visible", "true");
+      c.className = "clicked";
       if (c.getAttribute("cell-value") == 0){
         recursive(c);
       }
@@ -148,7 +163,12 @@ function revealBoard() {
   for (var i = 0 ; i < N ; i++) {
     for (var j = 0 ; j < N ; j++){
       var cell = grid.rows[i].cells[j];
-      cell.innerHTML = cell.getAttribute("cell-value");
+      if (cell.getAttribute("data-mine") == "true"){
+        cell.className = "bomb";
+      }else {
+        cell.className = "clicked";
+        cell.innerHTML = cell.getAttribute("cell-value");
+      }
     }
   }
 }
