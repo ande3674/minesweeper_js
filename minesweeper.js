@@ -74,6 +74,9 @@ function addNumbers() {
   }
 }
 
+// TODO - still need to update bombcount if you click a red cell
+// that doesnt end up being a bomb !!!!!!!!!!!
+// or else disable clicks on red cells 
 function clickCell(cell) {
   // if bomb is clicked
   if (cell.getAttribute("data-mine") === "true") {
@@ -83,6 +86,7 @@ function clickCell(cell) {
   }
   //else - no bomb
   else {
+    // TODO if it is red, increase bomb count
     cell.className = "clicked";
     // if value is > 0 - reveal one cell
     if (cell.getAttribute("cell-value") > 0){
@@ -103,7 +107,6 @@ function clickCell(cell) {
 }
 
 function rightClickCell(cell) {
-  // TODO disable the menu from popping up
   // if cell is not already red
   if (cell.className == "hidden") {
     // turn the cell red
@@ -117,21 +120,25 @@ function rightClickCell(cell) {
     cell.className = "hidden";
     bombCount = bombCount + 1;
     countElement.innerHTML = bombCount;
-
   }
 }
 
 function recursive(cell) {
+  // Update the cell to clicked, visible
   cell.innerHTML = cell.getAttribute("cell-value");
   cell.setAttribute("visible", "true");
   cell.className = "clicked";
+  // Get all of the surrounding cells
   var surroundingCells = getSurroundingCells(cell, cell.parentNode.rowIndex, cell.cellIndex);
   surroundingCells.forEach(function(coords) {
     c = grid.rows[coords[0]].cells[coords[1]];
     if (c.getAttribute("visible") === "false"){
+      // Update surrounding cells to clicked, visible
       c.innerHTML = c.getAttribute("cell-value");
       c.setAttribute("visible", "true");
       c.className = "clicked";
+      // if the cell value is 0 - you can update all of its surrounding cells as well
+      // call the function recursively on the cells with value 0
       if (c.getAttribute("cell-value") == 0){
         recursive(c);
       }
